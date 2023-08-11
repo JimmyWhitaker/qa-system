@@ -10,6 +10,8 @@ This project demonstrates how to utilize Label Studio as a feedback mechanism to
 
 3. **chatbot.py**: Incorporates the LabelStudioCallbackHandler into the QA system, initializes the QA chain, and provides a chat interface using Gradio.
 
+4. **extract_good_examples.py**: A script to extract examples labeled 'good' from a JSONL file exported from Label Studio and add them to an existing vector database.
+
 ## Running the Example
 
 1. Clone this repository. 
@@ -108,12 +110,22 @@ python data_preparation_script.py --repo_path YOUR_OUTPUT_REPO_PATH --repo_url Y
 
 
 2. **Launch the QA System with Label Studio Feedback Mechanism**:
-This script will start a chat interface where you can interact with the QA system. Feedback from the QA system will be sent to Label Studio for potential human review. 
+This script will start a chat interface where you can interact with the QA system. Feedback from the QA system will be sent to Label Studio for potential human review, and we can view it when we click the refresh button. 
 
 ```bash
 python chatbot.py --project_id 20
 ```
 Note: The `project_id` number should match your project in Label Studio (e.g. for `http://localhost:8080/projects/20/`, the project number would be `20`)
+
+3. **Annotate and Export Data from Label Studio**: After we have annotated our data with Label Studio, we can export it as a JSON file. 
+
+4. **Incorporate 'Good' Examples into our Vectordb**: Run the script to extract 'good' labeled examples from your JSONL file and add them to the vector database:
+
+```bash
+python extract_good_examples.py --json_path PATH_TO_YOUR_JSON_FILE --persist_dir VECTORDB_PERSIST_DIRECTORY
+```
+
+5. **Restart the QA System**: By restarting the QA system, with our updated vectors, our labeled documents will be incorporated in the retrieval task. 
 
 ## Understanding the Code
 
@@ -128,5 +140,3 @@ The QA system uses embeddings to retrieve relevant documentation sections for ea
 - Make sure that your Label Studio instance is running and accessible through the specified URL before starting the ChatBot. 
 
 - Ensure that the `LABEL_STUDIO_API_KEY` and `OPENAI_API_KEY` are set to valid values corresponding to your Label Studio instance and OpenAI account.
-
-- TODO: Add a script to incorporate examples labeled `good` to the vector database. 
